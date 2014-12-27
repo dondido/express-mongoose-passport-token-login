@@ -1,0 +1,43 @@
+<section id="sign-up-form">
+    <input type="radio" id="reg-form" name="login-switch">
+    <input type="radio" id="log-form" name="login-switch" checked>
+    <input type="radio" id="res-form" name="login-switch">
+    <form action="/register" method="POST" id="sign-up-form" class="panel form-panel">
+        <h2>Please sign up</h2>
+        <div class="form-field-group">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input class="form-field" type="text" name="fullname" placeholder="Full name">
+            <input class="form-field" type="email" name="email" placeholder="Email">
+            <input class="form-field" type="password" name="password" placeholder="Password">
+            <label><input class="login-remember" type="checkbox" name="remember" value="1"> Remember me </label>
+            <button type="submit">Sign me up!</button>
+        </div>
+        <div class="forgot">
+            Already a member? <label class="label-switch" for="log-form">Sign In Here</label>
+        </div>
+    </form>
+    <form action="/account" method="POST" id="log-in-form" class="panel form-panel">
+        <h2>Please sign in</h2>
+        <div class="form-field-group">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input class="form-field" type="email" name="email" placeholder="Email">
+            <input class="form-field" type="password" name="password" placeholder="Password">
+            <label><input class="login-remember" type="checkbox" name="remember" value="1"> Remember me </label>
+            <button id="login" type="submit">Log me in!</button>
+        </div>
+        <div class="forgot">
+            <div>Don't have an account! <label class="label-switch" for="reg-form">Sign Up Here</label></div>
+            <label class="label-switch" for="res-form">Forgot Password?</label>
+        </div>
+    </form>
+    <form method="POST" id="reset-pass-form" class="panel form-panel">
+        <h2>Request new password</h2>
+        <div class="form-field-group">
+            <input class="form-field" type="email" name="email" placeholder="Email">
+            <button id="forgotten-pass" type="submit">Submit</button>
+        </div>
+        <div class="forgot">
+            <label class="label-switch" for="log-form">Sign In Here</label>
+        </div>
+    </form>
+</section>

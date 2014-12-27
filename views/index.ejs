@@ -1,0 +1,9 @@
+<% include header %>
+    <div class="container">
+    <% if (!isAuthenticated) { %>
+    <% include sign %>
+    <% } else { %>
+    <% include account %>
+    <% } %>
+    </div>
+<% include footer %>
