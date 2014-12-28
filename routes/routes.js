@@ -1,10 +1,13 @@
 module.exports = function (app, passport, Account) {
    
     app.get('/', function (req, res) {
+        if(req.cookies.remember === '0') {
+            res.clearCookie('remember');
+        }
         res.render(
             'index',
             {
-                isAuthenticated: req.isAuthenticated(),
+                isAuthenticated: req.isAuthenticated() && req.cookies.remember,
                 csrfToken: req.csrfToken()
             }
         );
@@ -25,18 +28,29 @@ module.exports = function (app, passport, Account) {
                     return next(err);
                 }
                 console.log('user registered!');
-                res.redirect('/');
+                res.redirect('back');
             }
         );
     });
 
     app.post('/account', passport.authenticate('local'), function(req, res) {
-        res.redirect('/');
+        /* When the user successfully logs in a remember me cookie is issued 
+        in addition to the standard session management cookie */
+        res.cookie('remember', 
+            req.body.remember ? '1' : '0', 
+            { 
+                maxAge: 900000, 
+                httpOnly: true 
+            }
+        );
+        res.redirect('back');
     });
 
     app.post('/logout', function(req, res) {
         req.logout();
-        res.redirect('/');
+        // This user should log in again after restarting the browser
+        res.clearCookie('remember');
+        res.redirect('back');
     });
 
 };
