@@ -3,17 +3,19 @@ express-mongoose-passport-token-login
 
 ## Synopsis
 
-User token authentication Node.js Application with express 4, mongoose, passport, passport-local, passport-local-mongoose, express-session and csurf.
+User session and token authentication node.js app with express 4, mongoose, passport, passport-local, passport-local-mongoose, express-session and csurf.
 
 ## Motivation
 
-Authentication is one of the most important parts of any web application. Implementing proper authentication system for any application can be a difficult task and Node.js applications are no exception to this. To address security concerns of exposing a user's login information, this example uses "User Token" authentication method. This example can be used as boilerplate for Node.js projects using Express 4, MongoDB, Passport, Express Session and Csurf REST API Auth Tokens.
-
-To demonstrate Session handling in Node, i have developed small Log-in and log-out System. In this User can log-in by providing their email, and that email will be used for further Session tracking. Once User log-out, Session will be destroyed and User will be redirected to home page.
+Authentication is one of the most important parts of any web application. Implementing proper authentication system for any application can be a difficult task and Node.js applications are no exception to this. To address security concerns of exposing a user's login information, this example uses sessions and tokens authentication methods. It can be used as boilerplate for Node.js projects using Express 4, MongoDB, Passport, Express Session and Csurf REST API Auth Tokens.
 
 This example uses the following flow of control:
 
-The user provides a user password and email in the login panel and clicks Sign In. The email provided will be used for further session tracking. After a request is complete, the server reports back on the request's success or failure user validation. If the request is valid, token is created using the user information fetched from the database, and then returned inside the view (depending on your template language; ejs-style is demonstrated here), set the csrfToken value as the value of a hidden input field. Tokens are added to requests which mutate state and validated against the visitor's session or csrf cookie. Token information is provided in every POST requests for accessing restricted endpoints in the application. In the context of tokens being used on single page applications, when refreshing the browser what happens with the token issue crops up. The answer is simple: token has to be stored somewhere: in session storage, local storage or a client side cookie. In this case we are using browser cookies as a storage mechanism, not as an authentication mechanism (the cookie won't be used by the token-based REST API to authenticate a user, hence no CSRF/XSRF attacks are possible). Once user logs out, session will be destroyed and user will be redirected to home page.
+The user provides a user password and email in the login panel and clicks Sign In. The email provided will be used for further session tracking of information that is needed to persist throughout the user's interaction with the web application. Instead of storing information via cookies in the user's browser, only a unique identifier is stored on the client side (called a "session id"). This session id is passed to the server every time HTTP or AJAX request is made. The Node.js app pairs this session id with it's database (in our case MongoDB) and retrieves the stored variables for use by the requested page. Using Express Session middleware takes the complexity away and makes it simple to get sessions up and running in no time. 
+
+After a request is complete, the server reports back on the request's success or failure user validation. If the request is valid, token is created using the user information fetched from the database, and then returned inside the view (ejs template engine is demonstrated here). The token value is set as the value of a hidden input field. Tokens are added to requests which mutate state and validated against the visitor's session. Only if correct token is present and correct, changes will be applied, otherwise the request will be rejected. Token information is provided only in POST requests for accessing restricted endpoints in the application, since GET requests can leak the token to different places (browser history, log files, etc.). 
+
+Once user logs out, session will be destroyed and user will be redirected to home page.
 
 
 ## Installation
