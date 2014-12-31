@@ -17,11 +17,17 @@ After a request is complete, the server reports back on the request's success or
 
 Once user logs out, session will be destroyed and user will be redirected to home page.
 
+By employing the practice of progressive enhancement the app honoured accessibility while taking advantage of cutting edge technology. It’s the best of both worlds.
+
 
 ## Installation
 
-Once you have forked the project, you can run the app by simply typing the following line in your terminal:
+Once you have forked this project, go ahead and install our dependencies by simply typing the following line in your terminal:
 
+```js
+npm install
+```
+Now let's start the app:
 ```js
 npm start
 ```
