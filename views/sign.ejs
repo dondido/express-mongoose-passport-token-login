@@ -6,9 +6,9 @@
         <h2>Please sign up</h2>
         <div class="form-field-group">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <input class="form-field" type="text" name="fullname" placeholder="Full name">
-            <input class="form-field" type="email" name="email" placeholder="Email">
-            <input class="form-field" type="password" name="password" placeholder="Password">
+            <input class="form-field" type="text" name="fullname" placeholder="Full name" required>
+            <input class="form-field" type="email" name="email" placeholder="Email" required>
+            <input class="form-field" type="password" name="password" placeholder="Password" required>
             <button type="submit">Sign me up!</button>
         </div>
         <div class="forgot">
@@ -22,18 +22,19 @@
             <input class="form-field" type="email" name="email" placeholder="Email">
             <input class="form-field" type="password" name="password" placeholder="Password">
             <label><input class="login-remember" type="checkbox" name="remember" value="1"> Remember me </label>
-            <button id="login" type="submit">Log me in!</button>
+            <button type="submit">Log me in!</button>
         </div>
         <div class="forgot">
             <div>Don't have an account! <label class="label-switch" for="reg-form">Sign Up Here</label></div>
             <label class="label-switch" for="res-form">Forgot Password?</label>
         </div>
     </form>
-    <form method="POST" id="reset-pass-form" class="panel form-panel">
+    <form action="/forgotten" method="POST" id="reset-pass-form" class="panel form-panel">
         <h2>Request new password</h2>
         <div class="form-field-group">
-            <input class="form-field" type="email" name="email" placeholder="Email">
-            <button id="forgotten-pass" type="submit">Submit</button>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input class="form-field" type="email" name="email" placeholder="Email" required>
+            <button type="submit">Submit</button>
         </div>
         <div class="forgot">
             <label class="label-switch" for="log-form">Sign In Here</label>

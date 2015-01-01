@@ -18,7 +18,6 @@ var path = require('path'),
     cookieParser = require('cookie-parser'),
     mongoose = require('mongoose'),
     passport = require('passport'),
-    LocalStrategy = require('passport-local').Strategy,
     Account = require(__dirname +'/models/account'),
 	app = express();
 

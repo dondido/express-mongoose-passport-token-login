@@ -6,13 +6,17 @@ body {
   background-color: #fff;
 }
 
+.button,
 #log-form:checked ~ #log-in-form,
 #reg-form:checked ~ #sign-up-form,
-#res-form:checked ~ #reset-pass-form {
+#res-form:checked ~ #reset-pass-form,
+#update-form:checked ~ #change-password,
+#exit-form:checked ~ #logout {
    display: block;
 }
 
 [name="login-switch"],
+[name="logout-switch"],
 input[type=radio] ~ form {
    display: none;
 }
@@ -64,14 +68,11 @@ input[type=radio] ~ form {
   border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
   box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
-  -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
 
-button {
+button,
+.button {
   width: 100%;
   color: #fff;
   background-color: #428bca;
@@ -85,20 +86,23 @@ button {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  -o-user-select: none;
   user-select: none;
 }
 
-button:hover {
+button:hover,
+.button:hover {
   background-color: #3071a9;
   border-color: #285e8e;
 }
 
-.label-switch {
-  color: #428bca;
+.button,
+.form-field {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-.label-switch:hover {
+.label-switch {
+  color: #428bca;
   cursor: pointer;
 }
 

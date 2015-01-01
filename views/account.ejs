@@ -1,5 +1,26 @@
-<form action="/logout" method="POST" class="panel">
-	<input type="hidden" name="_csrf" value="<%= csrfToken %>">
-	<button type="submit">Log Out</button>
-</form>
+<div class="panel form-panel">
+    <h2>Account</h2>
+	<input type="radio" id="update-form" name="logout-switch">
+	<input type="radio" id="exit-form" name="logout-switch" checked>
 
+	<form action="/reset" method="POST" id="change-password">
+		<div class="form-field-group">
+		    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+		    <input class="form-field" type="password" name="password" placeholder="Current Password" required>
+		    <input class="form-field" type="password" name="new_password" placeholder="New Password" required>
+		    <input class="form-field" type="password" name="confirm_password" placeholder="Confirm New Password" required>
+		    <button type="submit">Update Password</button>
+		</div>
+		<div class="forgot">
+	        <label class="label-switch" for="exit-form">Cancel</label>
+	    </div>
+	</form>
+
+	<form action="/logout" method="POST" id="logout">
+		<div class="form-field-group">
+			<label for="update-form" class="button">Change Password</label>
+			<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+			<button type="submit">Log Out</button>
+		</div>
+	</form>
+</div>
