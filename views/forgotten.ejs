@@ -4,7 +4,7 @@
 	<form action="/updatepass" method="POST" id="change-password">
 		<div class="form-field-group">
 			<div>An email will be sent with a unique token which will allow password change operation to be performed. Please enter the token and new password in the input fields provided below.</div>
-			<input class="form-field" name="_csrf" placeholder="Token">
+			<input class="form-field" name="_csrf" placeholder="Token" required>
 			<input class="form-field" type="hidden" name="email" value="<%= email %>">
 		    <input class="form-field" type="password" name="new_password" placeholder="New Password" required>
 		    <input class="form-field" type="password" name="confirm_password" placeholder="Confirm New Password" required>

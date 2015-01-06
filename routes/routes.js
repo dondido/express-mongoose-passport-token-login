@@ -19,8 +19,8 @@ module.exports = function (app, passport, Account) {
     }, emailCfg));
 
     app.get('/', function (req, res) {
-
-        if(req.cookies.remember === '0') {
+        if(req.cookies.remember === '0' && 
+            req.headers.referer.indexOf("http://" + req.headers.host)) {
             // This user should log in again after restarting the browser
             res.clearCookie('remember');
         }
@@ -90,7 +90,6 @@ module.exports = function (app, passport, Account) {
                   console.log('There was an error sending the email');
                   emailstatus = 'submit-fail';
                 }
-                console.log("submit-success", req.csrfToken())
                 res.render('forgotten', {email: req.body.email});
             });
         });

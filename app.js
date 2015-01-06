@@ -17,7 +17,15 @@ var path = require('path'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
     mongoose = require('mongoose'),
+    /* Here we find an appropriate database to connect to, defaulting to
+    localhost if we don't find one. */
+    uristring = process.env.MONGOLAB_URI ||
+    process.env.MONGOHQ_URL ||
+    'mongodb://localhost/passport_local_csrf',
     passport = require('passport'),
+    /* The http server will listen to an appropriate port,
+    or default to port 8001. */
+    port = process.env.PORT || 8001,
     Account = require(__dirname +'/models/account'),
 	app = express();
 
@@ -26,9 +34,15 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.set('view options', { layout: false });
 
-
-// Connect mongoose
-mongoose.connect('mongodb://localhost/passport_local_csrf');
+// Makes connection asynchronously.  Mongoose will queue up database
+// operations and release them when the connection is complete.
+mongoose.connect(uristring, function (err, res) {
+  if (err) {
+  console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+  } else {
+  console.log ('Succeeded connected to: ' + uristring);
+  }
+});
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -68,4 +82,4 @@ passport.deserializeUser(Account.deserializeUser());
 
 require(__dirname +'/routes/routes')(app, passport, Account);
 
-http.createServer(app).listen(8001);
+http.createServer(app).listen(port);

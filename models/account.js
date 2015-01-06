@@ -32,7 +32,6 @@ Account.statics.updatePassword = function(user, password, cb) {
                 } else {
                     console.log('Password reset!');
                 }
-                console.log(cb)
                 cb();
             });
         }
