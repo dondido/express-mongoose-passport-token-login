@@ -31,6 +31,13 @@ Now let's start the app:
 ```js
 npm start
 ```
+
+In order to automate the workflow and build processes for deployment we use Grunt. The task runner help us minify and compress our assets to improve your site’s performance and prepare it for production:
+
+```js
+grunt
+```
+
 And here is how you run the app in production mode:
 
 ```js
