@@ -19,6 +19,8 @@ Once user logs out, session will be destroyed and user will be redirected to hom
 
 This app provides a "Remember Me" feature that saves the user's session data allowing them to bypass the login screen whenever they revisit the site (their authenticated state is persisted beyond the immediate scope of use). If "Remember me" checkbox on the login page is selected, the session expiration will be extended to a week and otherwise it is just treated as a normal window session that does not have an explicit expiration date and will therefore forcibly expire when the browser is closed. 
 
+This app also features 'Forgot Password' functionality that allows users to reset existing password to a new value. Users are required to navigate to the 'Forgot Password' page and enters their email (which is unique) to request a password reset. Then an email in plain-text with temporary password-reset token will be sent to the user email account. User use the temporary token to resets their password.
+
 By employing the practice of progressive enhancement the app honours accessibility while taking advantage of cutting edge technology. It’s the best of both worlds.
 
 
