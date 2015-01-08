@@ -17,7 +17,9 @@ After a request is complete, the server reports back on the request's success or
 
 Once user logs out, session will be destroyed and user will be redirected to home page.
 
-By employing the practice of progressive enhancement the app honoured accessibility while taking advantage of cutting edge technology. It’s the best of both worlds.
+This app provides a "Remember Me" feature that saves the user's session data allowing them to bypass the login screen whenever they revisit the site (their authenticated state is persisted beyond the immediate scope of use). If "Remember me" checkbox on the login page is selected, the session expiration will be extended to a week and otherwise it is just treated as a normal window session that does not have an explicit expiration date and will therefore forcibly expire when the browser is closed. 
+
+By employing the practice of progressive enhancement the app honours accessibility while taking advantage of cutting edge technology. It’s the best of both worlds.
 
 
 ## Installation
@@ -32,7 +34,7 @@ Now let's start the app:
 npm start
 ```
 
-In order to automate the workflow and build processes for deployment we use Grunt. The task runner help us minify and compress our assets to improve your site’s performance and prepare it for production:
+In order to automate the workflow and build processes for deployment we use Grunt. The task runner help us minify and compress our assets to improve site’s performance and prepare it for production:
 
 ```js
 grunt
