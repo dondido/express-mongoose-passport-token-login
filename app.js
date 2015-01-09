@@ -1,17 +1,17 @@
 var path = require('path'),
     express = require('express'),
     http = require('http'),
-    /* This app uses sessions to remember whether the user is logged in or not.
+    /* This app uses sessions to remember whether the user is logged in or not
     Using sessions to keep track of users as they journey through site is
-    key to any respectable app. Sessions will accessible through the request 
+    key to any respectable app. Sessions will accessible through the request
     object in each route. */
     session = require('express-session'),
     /* When the node app restarts, all session related data will be lost.
-    MongoStore allows us to store the Express sessions into MongoDB instead of 
-    using the MemoryStore, which is a store for development use only, 
+    MongoStore allows us to store the Express sessions into MongoDB instead of
+    using the MemoryStore, which is a store for development use only,
     bundled with Express. */
     MongoStore = require('connect-mongo')(session),
-    /* The csurf middleware provides easy-to-use protection against 
+    /* The csurf middleware provides easy-to-use protection against
     Cross Site Request Forgeries. */
     csrf = require('csurf'),
     bodyParser = require('body-parser'),
@@ -26,6 +26,8 @@ var path = require('path'),
     /* The http server will listen to an appropriate port,
     or default to port 8001. */
     port = process.env.PORT || 8001,
+    favicon = require('serve-favicon'),
+    compression = require('compression'),
     Account = require(__dirname +'/models/account'),
 	app = express();
 
@@ -34,8 +36,16 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.set('view options', { layout: false });
 
-// Makes connection asynchronously.  Mongoose will queue up database
-// operations and release them when the connection is complete.
+app.use(favicon(__dirname + '/public/img/icon/favicon.ico'));
+
+// Switch off the default 'X-Powered-By: Express' header
+app.disable('x-powered-by');
+
+// compress all requests
+app.use(compression());
+
+/* Makes connection asynchronously.  Mongoose will queue up database
+operations and release them when the connection is complete. */
 mongoose.connect(uristring, function (err, res) {
   if (err) {
   console.log ('ERROR connecting to: ' + uristring + '. ' + err);
@@ -54,7 +64,10 @@ app.use(
 		{
             secret: process.env.SESSION_SECRET || 'secret',
             resave: false,
-            saveUninitialized: true
+            saveUninitialized: true,
+            cookie : {
+                maxAge : 7 * 24 * 60 * 60 * 1000 // seconds which equals 1 week
+            }
         }
 	)
 );

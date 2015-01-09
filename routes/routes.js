@@ -1,6 +1,8 @@
 var merge = require('merge'),
     exist = require(__dirname + '/../custom_modules/module-exist'),
     mailer = require('express-mailer'),
+    /* Private email config file will not be available on git. This config file
+    needs to be created. */
     emailCfg = exist(__dirname + "/../private/emailcfg.js") || {
       to: 'gmail.user@gmail.com',
       auth: {
@@ -19,15 +21,10 @@ module.exports = function (app, passport, Account) {
     }, emailCfg));
 
     app.get('/', function (req, res) {
-        if(req.cookies.remember === '0' && 
-            req.headers.referer.indexOf("http://" + req.headers.host)) {
-            // This user should log in again after restarting the browser
-            res.clearCookie('remember');
-        }
         res.render(
             'index',
             {
-                isAuthenticated: req.isAuthenticated() && req.cookies.remember,
+                isAuthenticated: req.isAuthenticated(),
                 csrfToken: req.csrfToken()
             }
         );
@@ -54,21 +51,25 @@ module.exports = function (app, passport, Account) {
     });
 
     app.post('/account', passport.authenticate('local'), function(req, res) {
-        /* When the user successfully logs in a remember me cookie is issued 
-        in addition to the standard session management cookie */
-        res.cookie('remember', 
-            req.body.remember ? '1' : '0', 
-            { 
-                maxAge: 900000, 
-                httpOnly: true 
-            }
-        );
+         if (!req.body.remember){
+            /* Each session has a unique cookie object accompany it. This allows
+            us to alter the session cookie per visitor. We can set
+            req.session.cookie.expires to false to enable the cookie to remain
+            for only the duration of the user-agent. This user should log in
+            again after restarting the browser. */
+            req.session.cookie.expires = false;
+        }
         res.redirect('back');
     });
 
     app.post('/logout', function(req, res) {
+        /* Passport exposes a logout() function on reqthat can be called from
+        any route handler which needs to terminate a login session. Invoking
+        logout() will remove the req.user property and clear the login session
+        (if any). This however does not set req.session.cookie.expires to its
+        default value so req.session.destroy needs to be invoked. */
         req.logout();
-        res.clearCookie('remember');
+        req.session.destroy();
         res.redirect('back');
     });
 
