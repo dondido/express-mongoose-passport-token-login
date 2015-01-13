@@ -3,7 +3,7 @@ express-mongoose-passport-token-login
 
 ## Synopsis
 
-User session and token authentication node.js app with express 4, mongoose, passport, passport-local, passport-local-mongoose, express-session and csurf.
+User Session and Token authentication node.js app with express 4, mongoose, passport, passport-local, passport-local-mongoose, express-session and csurf. 
 
 ## Motivation
 
@@ -23,6 +23,9 @@ This app also features 'Forgot Password' functionality that allows users to rese
 
 By employing the practice of progressive enhancement the app honours accessibility while taking advantage of cutting edge technology. It’s the best of both worlds.
 
+## Prerequisites
+
+* MongoDB - Download and Install [MongoDB](http://www.mongodb.org/downloads) - Since this project is scaffolded with mongoose, we need mongoDB to be installed and have the `mongod` process running.
 
 ## Installation
 
@@ -35,18 +38,15 @@ Now let's start the app:
 ```js
 npm start
 ```
-
-In order to automate the workflow and build processes for deployment we use Grunt. The task runner help us minify and compress our assets to improve site’s performance and prepare it for production:
-
-```js
-grunt
-```
-
 And here is how you run the app in production mode:
-
 ```js
 node_env=PRODUCTION npm start
 ```
+
+## Demo
+
+Demo of the app can be found on Heroku:
+https://radiant-harbor-9133.herokuapp.com/
 
 
 ## License
