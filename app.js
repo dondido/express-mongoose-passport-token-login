@@ -44,7 +44,6 @@ app.disable('x-powered-by');
 
 // compress all requests
 app.use(compression());
-console.log(44444444333,uristring)
 /* Makes connection asynchronously.  Mongoose will queue up database
 operations and release them when the connection is complete. */
 mongoose.connect(uristring, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
@@ -78,7 +77,6 @@ app.use(passport.session());
 app.use(csrf());
 // error handler for csrf tokens
 app.use(function (err, req, res, next) {
-    console.log(2222333, req.isAuthenticated(), req.body)
     if (err.code !== 'EBADCSRFTOKEN') {
         return next(err);
     }
