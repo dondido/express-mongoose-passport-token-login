@@ -1,25 +1,15 @@
-var merge = require('merge'),
-    exist = require(__dirname + '/../custom_modules/module-exist'),
-    mailer = require('express-mailer'),
-    /* Private email config file will not be available on git. This config file
-    needs to be created. */
-    emailCfg = exist(__dirname + "/../private/emailcfg.js") || {
-      to: 'gmail.user@gmail.com',
-      auth: {
-              user: 'gmail.user@gmail.com',
-              pass: 'userpass'
-          }
-    }
+var exist = require(__dirname + '/../custom_modules/module-exist'),
+    nodemailer = require('nodemailer');
+    
 
 module.exports = function (app, passport, Account) {
-    // Initialize the data
-    mailer.extend(app, merge({
-        host: 'smtp.gmail.com', // hostname
-        secureConnection: true, // use SSL
-        port: 465, // port for secure SMTP
-        transportMethod: 'SMTP', // default is SMTP. Accepts anything that nodemailer accepts
-    }, emailCfg));
-
+    const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465, secure: true, // port for secure SMTP
+        // port: 587, secure: false, // true for 465, false for other ports
+        /* Private email config file will not be available on git. This config file needs to be created. */
+        auth: exist(__dirname + "/../private/emailcfg.js")
+    });
     app.get('/', function (req, res) {
         res.render(
             'index',
@@ -51,7 +41,7 @@ module.exports = function (app, passport, Account) {
     });
 
     app.post('/account', passport.authenticate('local'), function(req, res) {
-         if (!req.body.remember){
+        if (!req.body.remember){
             /* Each session has a unique cookie object accompany it. This allows
             us to alter the session cookie per visitor. We can set
             req.session.cookie.expires to false to enable the cookie to remain
@@ -77,22 +67,19 @@ module.exports = function (app, passport, Account) {
     app.post('/forgotten', function(req, res) {
 
         Account.findByUsername(req.body.email, function(err, existingUser) {
-            app.mailer.send(
-            'email',
-            {
-                to: req.body.email, // REQUIRED. This can be a comma delimited string just like a normal email to field.
-                subject: 'Password token',
-                token: req.csrfToken()
-            },
-            function (err) {
-                var emailstatus = 'submit-success';
-                if (err) {
-                  // handle error
-                  console.log('There was an error sending the email');
-                  emailstatus = 'submit-fail';
-                }
+            async function sendMail() {
+                var mailOptions = {
+                    to: req.body.email, // list of receivers
+                    text: req.csrfToken(),
+                    subject: 'Password token',
+                    from: '"Fred Foo 👻" <foo@example.com>',
+                };
+                // send mail with defined transport object
+                var info = await transporter.sendMail(mailOptions);
+                console.log("Message sent: %s", info.messageId);
                 res.render('forgotten', {email: req.body.email});
-            });
+            }
+            sendMail().catch(console.error);
         });
     });
 

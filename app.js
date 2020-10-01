@@ -1,6 +1,7 @@
 var path = require('path'),
     express = require('express'),
-    http = require('http'),
+    https = require('https'),
+    fs = require('fs'),
     /* This app uses sessions to remember whether the user is logged in or not
     Using sessions to keep track of users as they journey through site is
     key to any respectable app. Sessions will accessible through the request
@@ -21,7 +22,7 @@ var path = require('path'),
     localhost if we don't find one. */
     uristring = process.env.MONGOLAB_URI ||
     process.env.MONGOHQ_URL ||
-    'mongodb://localhost/passport_local_csrf',
+    'mongodb://localhost:27017/passport_local_csrf',
     passport = require('passport'),
     /* The http server will listen to an appropriate port,
     or default to port 8001. */
@@ -43,15 +44,14 @@ app.disable('x-powered-by');
 
 // compress all requests
 app.use(compression());
-
+console.log(44444444333,uristring)
 /* Makes connection asynchronously.  Mongoose will queue up database
 operations and release them when the connection is complete. */
-mongoose.connect(uristring, function (err, res) {
-  if (err) {
-  console.log ('ERROR connecting to: ' + uristring + '. ' + err);
-  } else {
-  console.log ('Succeeded connected to: ' + uristring);
-  }
+mongoose.connect(uristring, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+    console.log('You are connected!');
 });
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -78,6 +78,7 @@ app.use(passport.session());
 app.use(csrf());
 // error handler for csrf tokens
 app.use(function (err, req, res, next) {
+    console.log(2222333, req.isAuthenticated(), req.body)
     if (err.code !== 'EBADCSRFTOKEN') {
         return next(err);
     }
@@ -95,4 +96,11 @@ passport.deserializeUser(Account.deserializeUser());
 
 require(__dirname +'/routes/routes')(app, passport, Account);
 
-http.createServer(app).listen(port);
+//http.createServer(app).listen(port);
+https.createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+}, app)
+.listen(port, function () {
+    console.log(`Example app listening on port ${port}! Go to https://localhost:${port}/`)
+});

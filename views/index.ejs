@@ -1,9 +1,9 @@
-<% include header %>
+<%- include('header') -%>
     <div class="container">
     <% if (isAuthenticated) { %>
-    <% include account %>
+    <%- include('account') -%>
     <% } else { %>
-    <% include sign %>
+    <%- include('sign') -%>
     <% } %>
     </div>
-<% include footer %>
+<%- include('footer') -%>
