@@ -26,7 +26,7 @@
     "cookie-parser": "^1.4.5",
     "csurf": "^1.11.0",
     "ejs": "~3.1.7",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-session": "^1.17.1",
     "mongodb": "~3.6.2",
     "mongoose": "~5.13.15",
